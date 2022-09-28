@@ -6,7 +6,7 @@ pipeline{
     stages{
        stage('GetCode'){
             steps{
-                git 'https://github.com/mgidw/test.git'
+                git branch:'main', url: 'https://github.com/mgidw/test.git'
             }
          }        
        stage('Build'){
