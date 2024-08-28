@@ -15,8 +15,9 @@ pipeline{
             }
          }
        stage('SonarQube Analysis') {
+      def scannerHome = tool 'SonarQubeScanner-6.1.0';
     def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
+    withSonarQubeEnv('sonarqube-10.6.0') {
       sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=manya123 -Dsonar.projectName='manya123'"
     }
   }
