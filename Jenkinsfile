@@ -14,16 +14,12 @@ pipeline{
                 sh 'mvn clean package'
             }
          }
-        stage('SonarQube analysis') {
- def scannerHome = tool 'SonarQubeScanner-6.1.0';
-        steps{
-        withSonarQubeEnv('sonarqube-10.6.0') { 
-        // If you have configured more than one global server connection, you can specify its name
-     sh "${scannerHome}/bin/sonar-scanner"
-        sh "mvn sonar:sonar"
+       stage('SonarQube Analysis') {
+    def mvn = tool 'Default Maven';
+    withSonarQubeEnv() {
+      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=manya123 -Dsonar.projectName='manya123'"
     }
-        }
-        }
+  }
        
     }
 }
