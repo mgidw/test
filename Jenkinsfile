@@ -1,26 +1,37 @@
-pipeline{
+pipeline {
     agent any
-    environment {
-        PATH = "$PATH:C:/Program Files/apache-maven-3.9.9-bin/apache-maven-3.9.9/bin"
-    }
-    stages{
-       stage('GetCode'){
-            steps{
-                git branch:'main', url: 'https://github.com/mgidw/test.git'
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
             }
-         }        
-    stage('Build'){
-             steps{
-                sh 'mvn clean package'
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
             }
-         }
-       stage('SonarQube Analysis') {
-      def scannerHome = tool 'SonarQubeScanner-6.1.0';
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv('sonarqube-10.6.0') {
-      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=manya123 -Dsonar.projectName='manya123'"
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deployment will be done on my Birthday!!'
+            }
+        }
+        stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube-10.6.0')
+                {
+                    bat script: """
+                    sonar-scanner -D"sonar.projectKey=manya123" \
+                    -D"sonar.sources=." \
+                    -D"sonar.host.url=http://localhost:9000" \
+                    -D"sonar.login=sqa_6bf382a0e813f4497f0e9cedb5854d1dc30a0536"
+                    """
+                }
+            }
+        }
     }
-  }
+}
        
     }
 
